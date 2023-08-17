@@ -6,9 +6,7 @@ fn main() {
 }
 
 fn app(cx: Scope) -> Element {
-    cx.render(rsx! {
-        A {}
-    })
+    cx.render(rsx! { A {} })
 }
 
 fn A(cx: Scope) -> Element {
@@ -16,11 +14,9 @@ fn A(cx: Scope) -> Element {
 
     cx.render(rsx! {
         div {
-            div { "我是A组件" },
-            button {onclick: move |_| car_name.set("奥拓".to_string()), "换车" },
-            B {
-                car_name: (**car_name).clone(),
-            },
+            div { "我是A组件" }
+            button { onclick: move |_| car_name.set("奥拓".to_string()), "换车" }
+            B { car_name: (**car_name).clone() }
         }
     })
 }
@@ -31,7 +27,5 @@ struct BProps {
 }
 
 fn B(cx: Scope<BProps>) -> Element {
-    cx.render(rsx! {
-        div { "我是B组件，接受到的车是{cx.props.car_name}" }
-    })
+    cx.render(rsx! { div { "我是B组件，接受到的车是{cx.props.car_name}" } })
 }

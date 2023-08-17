@@ -7,9 +7,9 @@ fn main() {
 
 fn app(cx: Scope) -> Element {
     cx.render(rsx! {
-        Person { name: "jerry", age: 19},
-        Person { name: "tom", sex: "女"},
-        Person { name: "老刘", age: 30, sex: "女"},
+        Person { name: "jerry", age: 19 }
+        Person { name: "tom", sex: "女" }
+        Person { name: "老刘", age: 30, sex: "女" }
     })
 }
 

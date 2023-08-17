@@ -22,8 +22,8 @@ fn app(cx: Scope) -> Element {
 
     cx.render(rsx! {
         div {
-            h2 { opacity: "{opacity}", "React学不会怎么办？" },
-            button { onclick: move |_| is_suicide.set(true), "不活了" },
+            h2 { opacity: "{opacity}", "React学不会怎么办？" }
+            button { onclick: move |_| is_suicide.set(true), "不活了" }
         }
     })
 }
