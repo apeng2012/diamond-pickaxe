@@ -1,5 +1,5 @@
 [package]
-name = "agg-p37"
+name = "agg-p48"
 version = "0.1.0"
 edition = "2021"
 
@@ -9,3 +9,4 @@ edition = "2021"
 dioxus = { workspace = true }
 dioxus-web = { workspace = true }
 async-std = { workspace = true }
+chrono = "0.4.26"

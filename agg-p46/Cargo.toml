@@ -8,4 +8,4 @@ edition = "2021"
 [dependencies]
 dioxus = { workspace = true }
 dioxus-web = { workspace = true }
-async-std = "1.12.0"
+async-std = { workspace = true }
