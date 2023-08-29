@@ -1,13 +1,16 @@
 #![allow(non_snake_case)]
 use dioxus::prelude::*;
 
-pub fn Item(cx: Scope) -> Element {
+use crate::Todo;
+
+#[inline_props]
+pub fn Item(cx: Scope, _id: i32, todo: Todo) -> Element {
     cx.render(rsx! {
         style { include_str!("./index.css") }
-        li {
+        li { key: "{_id}",
             label {
-                input { "type": "checkbox" }
-                span { "xxxxx" }
+                input { "type": "checkbox", checked: "{todo.done}" }
+                span { "{todo.name}" }
             }
             button { class: "btn btn-danger", style: "display: none", "shanchu" }
         }
