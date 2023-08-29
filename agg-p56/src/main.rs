@@ -49,7 +49,7 @@ fn app(cx: Scope) -> Element {
         style { include_str!("./main.css") }
         div { class: "todo-container",
             div { class: "todo-wrap",
-                header::index::Header {}
+                header::index::Header { todos: todos }
                 list::index::List { todos: todos }
                 footer::index::Footer {}
             }

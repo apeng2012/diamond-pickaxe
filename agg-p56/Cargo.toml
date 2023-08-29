@@ -8,3 +8,5 @@ edition = "2021"
 [dependencies]
 dioxus = { workspace = true }
 dioxus-web = { workspace = true }
+gloo-dialogs = { workspace = true }
+
