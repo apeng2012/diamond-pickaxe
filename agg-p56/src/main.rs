@@ -1,6 +1,6 @@
 #![allow(non_snake_case)]
 use dioxus::prelude::*;
-use std::collections::HashMap;
+use im_rc::hashmap;
 
 mod footer;
 mod header;
@@ -13,36 +13,24 @@ fn main() {
 
 fn app(cx: Scope) -> Element {
     let todos = use_ref(cx, || {
-        HashMap::from([
-            (
-                1,
-                Todo {
-                    name: "Eat".to_string(),
-                    done: true,
-                },
-            ),
-            (
-                2,
-                Todo {
-                    name: "Sleep".to_string(),
-                    done: true,
-                },
-            ),
-            (
-                3,
-                Todo {
-                    name: "Code".to_string(),
-                    done: false,
-                },
-            ),
-            (
-                4,
-                Todo {
-                    name: "Shop".to_string(),
-                    done: true,
-                },
-            ),
-        ])
+        hashmap! {
+            1 => Todo {
+                name: "Eat".to_string(),
+                done: true,
+            },
+            2 => Todo {
+                name: "Sleep".to_string(),
+                done: true,
+            },
+            3 => Todo {
+                name: "Code".to_string(),
+                done: false,
+            },
+            4 => Todo {
+                name: "Shop".to_string(),
+                done: true,
+            },
+        }
     });
 
     cx.render(rsx! {

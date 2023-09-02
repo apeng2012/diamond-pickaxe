@@ -1,7 +1,7 @@
 #![allow(non_snake_case)]
 use dioxus::html::input_data::keyboard_types;
 use dioxus::prelude::*;
-use std::collections::HashMap;
+use im_rc::HashMap;
 
 use crate::Todo;
 
