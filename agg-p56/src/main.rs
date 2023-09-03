@@ -39,7 +39,7 @@ fn app(cx: Scope) -> Element {
             div { class: "todo-wrap",
                 header::index::Header { todos: todos }
                 list::index::List { todos: todos }
-                footer::index::Footer {}
+                footer::index::Footer { todos: todos }
             }
         }
     })
