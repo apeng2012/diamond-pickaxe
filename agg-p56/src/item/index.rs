@@ -29,7 +29,14 @@ pub fn Item<'a>(cx: Scope, id: i32, set_todos: &'a UseRef<HashMap<i32, Todo>>) -
                 }
                 span { "{todo.name}" }
             }
-            button { class: "btn btn-danger", style: if **mouse { "display: block" } else { "display: none" }, "shanchu" }
+            button {
+                class: "btn btn-danger",
+                style: if **mouse { "display: block" } else { "display: none" },
+                onclick: move |_| {
+                    set_todos.write().remove(id);
+                },
+                "Delete"
+            }
         }
     })
 }
