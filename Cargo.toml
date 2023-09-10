@@ -13,6 +13,7 @@ members = [
     "agg-p48",
     "agg-p56",
     "agg-p65",
+    "agg-p67",
 ]
 
 [workspace.dependencies]
