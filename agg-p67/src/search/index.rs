@@ -1,8 +1,8 @@
-use crate::{GighubUsers, GithubUser};
+use crate::{GighubUsers, HeadState};
 use dioxus::prelude::*;
 
 #[inline_props]
-pub fn search<'a>(cx: Scope, users: &'a UseRef<Vec<GithubUser>>) -> Element {
+pub fn search<'a>(cx: Scope, state: &'a UseRef<HeadState>) -> Element {
     let keyword = use_ref(cx, || "".to_string());
     let head = use_future(cx, (keyword,), |(keyword,)| {
         get_head(keyword.read().clone())
@@ -23,9 +23,11 @@ pub fn search<'a>(cx: Scope, users: &'a UseRef<Vec<GithubUser>>) -> Element {
                 }
                 button {
                     onclick: move |_| {
-                        if let Some(Ok(github_users)) = head.value() {
-                            *users.write() = github_users.items.clone();
-                        }
+                        state.set( match head.value() {
+                            Some(Ok(github_users)) => HeadState::Loaded(github_users.items.clone()),
+                            Some(Err(err)) => HeadState::Error(err.to_string()),
+                            None => HeadState::Loading,
+                        });
                     },
                     "Search"
                 }

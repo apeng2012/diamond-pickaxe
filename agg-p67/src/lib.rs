@@ -5,13 +5,13 @@ mod list;
 mod search;
 
 pub fn app(cx: Scope) -> Element {
-    let users = use_ref(cx, Vec::<GithubUser>::new);
+    let state = use_ref(cx, || HeadState::First);
 
     cx.render(rsx! {
         style { include_str!("./css/bootstrap.css") }
         div { class: "container",
-            search::index::search { users: users }
-            list::index::head_list { users: users }
+            search::index::search { state: state }
+            list::index::head_list { state: state }
         }
     })
 }
@@ -44,4 +44,12 @@ pub struct GithubUser {
     pub r#type: String,
     pub site_admin: bool,
     pub score: f64,
+}
+
+#[derive(Clone)]
+pub enum HeadState {
+    First,
+    Loading,
+    Loaded(Vec<GithubUser>),
+    Error(String),
 }
