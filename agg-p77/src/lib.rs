@@ -8,10 +8,17 @@ mod home;
 
 #[derive(Routable, Clone)]
 #[rustfmt::skip]
-enum Route {
+pub enum Route {
     #[layout(NavBar)]
-        #[route("/home")]
-        Home {},
+        #[route("/")]
+        NavBar {},
+        #[nest("/home")]
+        #[layout(Home)]
+            #[route("/message")]
+            Message {},
+            #[route("/news")]
+            News {},
+        #[end_layout]
         #[route("/about")]
         About {},
     #[end_layout]
@@ -28,23 +35,45 @@ pub fn app(cx: Scope) -> Element {
 #[inline_props]
 fn NavBar(cx: Scope) -> Element {
     render! {
-        nav {
-            ul {
-                li {
-                    Link { to: Route::Home {}, "Home" }
+        style { include_str!("./css/bootstrap.css") }
+        div {
+            div { class: "row",
+                div { class: "col-xs-offset-2 col-xs-8",
+                    div { class: "page-header", h2 { "Dioxus Router Demo" } }
                 }
-                li {
-                    Link { to: Route::About {}, "About" }
+            }
+            div { class: "row",
+                div { class: "col-xs-2 col-xs-offset-2",
+                    div { class: "list-group",
+                        Link { class: "list-group-item", to: Route::Message {}, "Home" }
+                        Link { class: "list-group-item", to: Route::About {}, "About" }
+                    }
+                }
+                div { class: "col-xs-6",
+                    div { class: "panel",
+                        div { class: "panel-body",
+                            div { Outlet::<Route> {} }
+                        }
+                    }
                 }
             }
         }
-        Outlet::<Route> {}
     }
 }
 
 #[inline_props]
 fn Home(cx: Scope) -> Element {
     render! { home::index::home {} }
+}
+
+#[inline_props]
+fn Message(cx: Scope) -> Element {
+    render! { home::message::message {} }
+}
+
+#[inline_props]
+fn News(cx: Scope) -> Element {
+    render! { home::news::news {} }
 }
 
 #[inline_props]
