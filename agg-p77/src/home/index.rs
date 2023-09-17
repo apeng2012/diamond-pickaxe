@@ -12,7 +12,14 @@ pub fn home(cx: Scope) -> Element {
                     Link { class: "list-group-item", to: Route::News {}, "News" }
                 }
                 li {
-                    Link { class: "list-group-item", to: Route::Message {}, "Message" }
+                    Link {
+                        class: "list-group-item",
+                        to: Route::Detail {
+                            id: "01".to_string(),
+                            title: "message1".to_string(),
+                        },
+                        "Message"
+                    }
                 }
             }
         }

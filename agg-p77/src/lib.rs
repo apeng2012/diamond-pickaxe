@@ -13,12 +13,20 @@ pub enum Route {
         #[route("/")]
         NavBar {},
         #[nest("/home")]
-        #[layout(Home)]
-            #[route("/message")]
-            Message {},
+            #[layout(Home)]
+            #[nest("/message")]
+                #[layout(Message)]
+                #[route("/:id?:title")]
+                Detail {
+                    id: String,
+                    title: String,
+                },
+                #[end_layout]
+            #[end_nest]
             #[route("/news")]
             News {},
-        #[end_layout]
+            #[end_layout]
+        #[end_nest]
         #[route("/about")]
         About {},
     #[end_layout]
@@ -45,7 +53,7 @@ fn NavBar(cx: Scope) -> Element {
             div { class: "row",
                 div { class: "col-xs-2 col-xs-offset-2",
                     div { class: "list-group",
-                        Link { class: "list-group-item", to: Route::Message {}, "Home" }
+                        Link { class: "list-group-item", to: Route::News {}, "Home" }
                         Link { class: "list-group-item", to: Route::About {}, "About" }
                     }
                 }
@@ -69,6 +77,11 @@ fn Home(cx: Scope) -> Element {
 #[inline_props]
 fn Message(cx: Scope) -> Element {
     render! { home::message::message {} }
+}
+
+#[inline_props]
+fn Detail(cx: Scope, id: String, title: String) -> Element {
+    render! { home::detail::detail { id: id.clone(), title: title.clone() } }
 }
 
 #[inline_props]
