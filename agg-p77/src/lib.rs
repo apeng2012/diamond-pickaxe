@@ -11,12 +11,12 @@ mod home;
 pub enum Route {
     #[layout(NavBar)]
         #[route("/")]
-        NavBar {},
+        About {},
         #[nest("/home")]
             #[layout(Home)]
             #[nest("/message")]
                 #[layout(Message)]
-                #[route("/:id?:title")]
+                #[route("/:id/:title")]
                 Detail {
                     id: String,
                     title: String,
@@ -27,8 +27,7 @@ pub enum Route {
             News {},
             #[end_layout]
         #[end_nest]
-        #[route("/about")]
-        About {},
+        #[redirect("/about", || Route::About {})]
     #[end_layout]
     #[route("/:..route")]
     PageNotFound {

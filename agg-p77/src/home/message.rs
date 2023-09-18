@@ -20,7 +20,7 @@ pub fn message(cx: Scope) -> Element {
         div {
             ul {
                 messages.read().iter().map(|msg| rsx! {
-                    li { Link {to: Route::Detail { id: msg.id.clone(), title: msg.title.clone()}, "hehe"}} //"{msg.title}"}}
+                    li { Link {to: Route::Detail { id: msg.id.clone(), title: msg.title.clone()}, "{msg.title}"}}
                 })
             }
         }
