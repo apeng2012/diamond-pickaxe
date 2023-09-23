@@ -9,3 +9,4 @@ edition = "2021"
 dioxus = { workspace = true }
 dioxus-router = "0.4.1"
 dioxus-web = { workspace = true }
+async-std = { workspace = true }

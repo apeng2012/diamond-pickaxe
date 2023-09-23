@@ -41,12 +41,27 @@ pub fn app(cx: Scope) -> Element {
 
 #[inline_props]
 fn NavBar(cx: Scope) -> Element {
+    let nav = use_navigator(cx);
     render! {
         style { include_str!("./css/bootstrap.css") }
         div {
             div { class: "row",
                 div { class: "col-xs-offset-2 col-xs-8",
-                    div { class: "page-header", h2 { "Dioxus Router Demo" } }
+                    div { class: "page-header",
+                        h2 { "Dioxus Router Demo" }
+                        button {
+                            onclick: move |_| {
+                                nav.go_back();
+                            },
+                            "Go back"
+                        }
+                        button {
+                            onclick: move |_| {
+                                nav.go_forward();
+                            },
+                            "Go forward"
+                        }
+                    }
                 }
             }
             div { class: "row",
