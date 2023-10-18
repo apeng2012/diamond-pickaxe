@@ -1,11 +1,15 @@
 use dioxus::prelude::*;
+use fermi::*;
+
+static CNT: Atom<i32> = Atom(|_| 0);
 
 pub fn app(cx: Scope) -> Element {
+    use_init_atom_root(cx);
     render!(rsx! { my_count {}})
 }
 
 fn my_count(cx: Scope) -> Element {
-    let cnt = use_state(cx, || 0);
+    let cnt = use_atom_state(cx, &CNT);
     let select_number = use_state(cx, || 1);
     let delay1s_inc = use_future(cx, (cnt, select_number), |(cnt, select_number)| async move {
         async_std::task::sleep(std::time::Duration::from_secs(1)).await;

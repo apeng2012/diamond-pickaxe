@@ -9,3 +9,4 @@ edition = "2021"
 dioxus = { workspace = true }
 dioxus-web = { workspace = true }
 async-std = { workspace = true }
+fermi = "0.4.0"
