@@ -1,25 +1,18 @@
 [workspace]
-
-members = [
-    "agg-p6",
-    "agg-p13",
-    "agg-p20",
-    "agg-p27",
-    "agg-p33",
-    "agg-p34",
-    "agg-p37",
-    "agg-p41",
-    "agg-p46",
-    "agg-p48",
-    "agg-p56",
-    "agg-p65",
-    "agg-p67",
-    "agg-p77",
-    "agg-p99",
-]
+resolver = "2"
+members = ["agg-p6"]
 
 [workspace.dependencies]
-dioxus = "0.4.0"
-dioxus-web = "0.4.0"
-gloo-dialogs = "0.2.0"
-async-std = "1.12.0"
+dioxus = { version = "0.6.0", features = [] }
+
+[profile]
+
+[profile.wasm-dev]
+inherits = "dev"
+opt-level = 1
+
+[profile.server-dev]
+inherits = "dev"
+
+[profile.android-dev]
+inherits = "dev"

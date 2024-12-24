@@ -1,20 +1,21 @@
 use dioxus::prelude::*;
 
 fn main() {
-    dioxus_web::launch(app);
+    dioxus::launch(App);
 }
 
-fn app(cx: Scope) -> Element {
-    cx.render(rsx! {
+#[component]
+fn App() -> Element {
+    let frameworks = vec!["Angular", "React", "Vue"];
+
+    rsx! {
         div {
             h1 { "前端js框架列表" }
             ul {
-                ["Angular", "React", "Vue"]
-                    .into_iter()
-                    .map(|f| rsx!(
-                        li { "{f}" }
-                    ))
+                for framework in frameworks {
+                    li { "{framework}" }
+                }
             }
         }
-    })
+    }
 }
