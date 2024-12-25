@@ -1,18 +1,27 @@
 use dioxus::prelude::*;
 
 fn main() {
-    dioxus_web::launch(app);
+    dioxus::launch(App);
 }
 
-fn app(cx: Scope) -> Element {
-    let is_hot = use_state(cx, || false);
+#[component]
+fn App() -> Element {
+    let mut is_hot = use_signal(|| false);
 
-    cx.render(rsx! {
+    rsx! {
         div {
             h1 {
-                onclick: move |_| is_hot.set(!**is_hot),
-                "今天天气很" if **is_hot { "炎热" } else { "凉爽" }
+                onclick: move |_| {
+                    let h = *is_hot.read();
+                    is_hot.set(!h);
+                },
+                "今天天气很"
+                if *is_hot.read() {
+                    "炎热"
+                } else {
+                    "凉爽"
+                }
             }
         }
-    })
+    }
 }

@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["agg-p6"]
+members = ["agg-p6", "agg-p13"]
 
 [workspace.dependencies]
 dioxus = { version = "0.6.0", features = [] }
