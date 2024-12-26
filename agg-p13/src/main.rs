@@ -12,11 +12,10 @@ fn App() -> Element {
         div {
             h1 {
                 onclick: move |_| {
-                    let h = *is_hot.read();
-                    is_hot.set(!h);
+                    is_hot.set(!is_hot());
                 },
                 "今天天气很"
-                if *is_hot.read() {
+                if is_hot() {
                     "炎热"
                 } else {
                     "凉爽"
