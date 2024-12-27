@@ -2,37 +2,37 @@
 use dioxus::prelude::*;
 
 fn main() {
-    dioxus_web::launch(app);
+    dioxus::launch(App);
 }
 
-fn app(cx: Scope) -> Element {
-    cx.render(rsx! {
+#[component]
+fn App() -> Element {
+    rsx! {
         Person { name: "jerry", age: 19 }
         Person { name: "tom", sex: "女" }
         Person { name: "老刘", age: 30, sex: "女" }
-    })
+    }
 }
 
-#[derive(Props)]
-struct PersonProps<'a> {
-    name: &'a str,
+#[derive(PartialEq, Props, Clone)]
+struct PersonProps {
+    #[props(into)]
+    name: String,
     #[props(default = 18)]
     age: u8,
-    sex: Option<&'a str>,
+    #[props(into)]
+    sex: Option<String>,
 }
 
-fn Person<'a>(cx: Scope<'a, PersonProps<'a>>) -> Element {
-    let sex = if let Some(sex) = cx.props.sex {
-        sex
-    } else {
-        "男"
-    };
-
-    cx.render(rsx! {
+fn Person(props: PersonProps) -> Element {
+    rsx! {
         ul {
-            li { "姓名: {cx.props.name}" }
-            li { "性别: {cx.props.age}" }
-            li { "年龄: {sex}" }
+            li { "姓名: {props.name}" }
+            li { "性别: {props.age}" }
+            li {
+                "年龄: "
+                {props.sex.unwrap_or_else(|| "男".to_string())}
+            }
         }
-    })
+    }
 }
