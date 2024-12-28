@@ -1,9 +1,15 @@
 [workspace]
 resolver = "2"
-members = ["agg-p6", "agg-p13", "agg-p20"]
+members = [
+    "agg-p6",
+    "agg-p13",
+    "agg-p20",
+    "agg-p27",
+    ]
 
 [workspace.dependencies]
 dioxus = { version = "0.6.0", features = [] }
+gloo-dialogs = "0.2.0"
 
 [profile]
 
