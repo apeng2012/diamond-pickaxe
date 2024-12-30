@@ -1,21 +1,35 @@
-#![allow(non_snake_case)]
+use std::collections::HashMap;
+
 use dioxus::prelude::*;
 
 fn main() {
-    dioxus_web::launch(app);
+    dioxus::launch(App);
 }
 
-fn app(cx: Scope) -> Element {
-    cx.render(rsx! {
+#[component]
+fn App() -> Element {
+    let mut values = use_signal(HashMap::new);
+
+    rsx! {
         form {
             onsubmit: move |event| {
-                let name = &event.values.get("name").unwrap()[0];
-                let passwd = &event.values.get("passwd").unwrap()[0];
-                gloo_dialogs::alert(&format!("你输入的用户名是：{name}，你输入的密码是：{passwd}"))
+                values.set(event.values());
+                values
+                    .with_mut(|x| {
+                        gloo_dialogs::alert(
+                            &format!(
+                                "你输入的用户名是：{}，你输入的密码是：{}",
+                                x.get("name").unwrap().as_value(),
+                                x.get("passwd").unwrap().as_value(),
+                            ),
+                        )
+                    });
             },
-            "用户名" input { name: "name", },
-            "密码" input { name: "passwd", },
-            button { r#type: "submit", "登录" },
+            "用户名"
+            input { name: "name" }
+            "密码"
+            input { name: "passwd" }
+            button { r#type: "submit", "登录" }
         }
-    })
+    }
 }
