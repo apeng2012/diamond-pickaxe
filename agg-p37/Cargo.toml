@@ -7,5 +7,10 @@ edition = "2021"
 
 [dependencies]
 dioxus = { workspace = true }
-dioxus-web = { workspace = true }
-async-std = { workspace = true }
+tokio = { workspace = true , features = ["time"] }
+
+[features]
+default = ["web"]
+web = ["dioxus/web"]
+desktop = ["dioxus/desktop"]
+mobile = ["dioxus/mobile"]

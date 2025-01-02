@@ -7,11 +7,13 @@ members = [
     "agg-p27",
     "agg-p33",
     "agg-p34",
+    "agg-p37",
     ]
 
 [workspace.dependencies]
 dioxus = { version = "0.6.0", features = [] }
 gloo-dialogs = "0.2.0"
+tokio = "1"
 
 [profile]
 
