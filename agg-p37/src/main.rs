@@ -1,3 +1,4 @@
+use async_std::task::sleep;
 use dioxus::prelude::*;
 
 fn main() {
@@ -8,12 +9,20 @@ fn main() {
 fn App() -> Element {
     let mut is_suicide = use_signal(|| false);
 
+    if is_suicide() {
+        return rsx! {};
+    }
+
     let mut opacity = use_signal(|| 1.0);
 
     use_future(move || async move {
         loop {
-            tokio::time::sleep(std::time::Duration::from_millis(200)).await;
-            opacity.set(if opacity() <= 0.0 { 1.0 } else { opacity() - 0.1 });
+            sleep(std::time::Duration::from_millis(200)).await;
+            opacity.set(if opacity() <= 0.0 {
+                1.0
+            } else {
+                opacity() - 0.1
+            });
         }
     });
 

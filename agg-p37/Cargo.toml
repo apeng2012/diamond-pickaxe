@@ -7,7 +7,7 @@ edition = "2021"
 
 [dependencies]
 dioxus = { workspace = true }
-tokio = { workspace = true , features = ["time"] }
+async-std = { workspace = true  }
 
 [features]
 default = ["web"]
