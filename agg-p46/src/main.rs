@@ -1,11 +1,11 @@
-#![allow(non_snake_case)]
 use dioxus::prelude::*;
 
 fn main() {
-    dioxus_web::launch(app);
+    dioxus::launch(App);
 }
 
-fn app(cx: Scope) -> Element {
+#[component]
+fn App() -> Element {
     let list_style = r"
         width: 200px;
         height: 150px;
@@ -17,9 +17,9 @@ fn app(cx: Scope) -> Element {
         height: 30px;
     ";
 
-    let news = use_ref(cx, Vec::<String>::new);
+    let mut news = use_signal(Vec::<String>::new);
 
-    use_future(cx, (news,), |(news,)| async move {
+    use_future(move || async move {
         loop {
             async_std::task::sleep(std::time::Duration::from_secs(1)).await;
             let num = news.read().len();
@@ -27,11 +27,11 @@ fn app(cx: Scope) -> Element {
         }
     });
 
-    cx.render(rsx! {
+    rsx! {
         div { style: "{list_style}",
-            news.read().iter().map(|value| rsx!(
+            {news.read().iter().map(|value| rsx! {
                 div { style: "{news_style}", "{value}" }
-            ))
+            })}
         }
-    })
+    }
 }
