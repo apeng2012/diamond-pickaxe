@@ -1,26 +1,27 @@
-#![allow(non_snake_case)]
 use chrono::prelude::*;
 use dioxus::prelude::*;
 use std::collections::HashMap;
 
 fn main() {
-    dioxus_web::launch(app);
+    dioxus::launch(App);
 }
 
-fn app(cx: Scope) -> Element {
-    cx.render(rsx! {
+#[component]
+fn App() -> Element {
+    rsx! {
         Demo1 {}
         hr {}
         hr {}
         hr {}
         Demo2 {}
-    })
+    }
 }
 
-fn Demo1(cx: Scope) -> Element {
-    let dt = use_state(cx, || "".to_string());
+#[component]
+fn Demo1() -> Element {
+    let mut dt = use_signal(|| "".to_string());
 
-    use_future(cx, (dt,), |(dt,)| async move {
+    use_future(move || async move {
         loop {
             async_std::task::sleep(std::time::Duration::from_secs(1)).await;
             let local: DateTime<Local> = Local::now();
@@ -28,7 +29,7 @@ fn Demo1(cx: Scope) -> Element {
         }
     });
 
-    cx.render(rsx! {
+    rsx! {
         div {
             h1 { "hello" }
             input { "type": "text" }
@@ -37,7 +38,7 @@ fn Demo1(cx: Scope) -> Element {
                 input { "type": "text" }
             }
         }
-    })
+    }
 }
 
 struct Person {
@@ -45,8 +46,9 @@ struct Person {
     age: u8,
 }
 
-fn Demo2(cx: Scope) -> Element {
-    let persons = use_ref(cx, || {
+#[component]
+fn Demo2() -> Element {
+    let mut persons = use_signal(|| {
         HashMap::from([
             (
                 1,
@@ -65,36 +67,48 @@ fn Demo2(cx: Scope) -> Element {
         ])
     });
 
-    cx.render(rsx! {
+    rsx! {
         div {
             h2 { "展示人员信息" }
             button {
                 onclick: move |_| {
-                    persons.write().insert(3, Person {name: "小王".to_string(), age: 20});
+                    persons
+                        .write()
+                        .insert(
+                            3,
+                            Person {
+                                name: "小王".to_string(),
+                                age: 20,
+                            },
+                        );
                 },
                 "添加一个小王"
             }
             h3 { "使用索引值作为key" }
             ul {
-                persons.read().values().enumerate().map(|(index, p)| rsx! {
-                    li {
-                        key: "{index}",
-                        "{p.name} --- {p.age}",
-                        input { "type": "text" },
-                    }
-                })
+                {
+                    persons
+                        .read()
+                        .values()
+                        .enumerate()
+                        .map(|(index, p)| rsx! {
+                            li { key: "{index}",
+                                "{p.name} --- {p.age}"
+                                input { "type": "text" }
+                            }
+                        })
+                }
             }
             hr {}
             h3 { "使用数据的唯一标识作为key" }
             ul {
-                persons.read().iter().map(|(key, p)| rsx! {
-                    li {
-                        key: "{key}",
-                        "{p.name} --- {p.age}",
-                        input { "type": "text" },
+                {persons.read().iter().map(|(key, p)| rsx! {
+                    li { key: "{key}",
+                        "{p.name} --- {p.age}"
+                        input { "type": "text" }
                     }
-                })
+                })}
             }
         }
-    })
+    }
 }

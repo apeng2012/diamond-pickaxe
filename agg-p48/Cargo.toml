@@ -7,6 +7,11 @@ edition = "2021"
 
 [dependencies]
 dioxus = { workspace = true }
-dioxus-web = { workspace = true }
 async-std = { workspace = true }
 chrono = "0.4.26"
+
+[features]
+default = ["web"]
+web = ["dioxus/web"]
+desktop = ["dioxus/desktop"]
+mobile = ["dioxus/mobile"]
