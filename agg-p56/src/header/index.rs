@@ -1,45 +1,43 @@
-#![allow(non_snake_case)]
 use dioxus::html::input_data::keyboard_types;
 use dioxus::prelude::*;
-use im_rc::HashMap;
 
-use crate::Todo;
+use crate::{Todo, TodoProps};
 
-#[inline_props]
-pub fn Header<'a>(cx: Scope, todos: &'a UseRef<HashMap<i32, Todo>>) -> Element {
-    let todo_name = use_state(cx, String::new);
+#[component]
+pub fn Header(mut props: TodoProps) -> Element {
+    let mut todo_name = use_signal(String::new);
 
-    cx.render(rsx! {
-        style { include_str!("./index.css") }
+    rsx! {
+        style { {include_str!("./index.css")} }
         div { class: "todo-header",
             input {
                 "type": "text",
                 value: "{todo_name}",
                 placeholder: "Please enter your task name and press Enter to confirm.",
                 oninput: move |event| {
-                    todo_name.set(event.value.clone());
+                    todo_name.set(event.value());
                 },
                 onkeyup: move |event| {
                     if event.data.code() != keyboard_types::Code::Enter {
                         return;
                     }
-                    if todo_name.trim() == "" {
+                    if todo_name().trim() == "" {
                         gloo_dialogs::alert("Input cannot be empty!");
                         return;
                     }
-                    let id = todos.read().len() as i32 + 1;
-                    todos
-                        .write()
+                    let id = props.todos.len() + 1;
+                    props
+                        .todos
                         .insert(
                             id,
                             Todo {
-                                name: (**todo_name).clone(),
+                                name: todo_name(),
                                 done: false,
                             },
                         );
                     todo_name.set("".to_string());
-                }
+                },
             }
         }
-    })
+    }
 }

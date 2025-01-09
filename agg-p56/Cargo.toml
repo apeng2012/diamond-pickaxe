@@ -7,6 +7,11 @@ edition = "2021"
 
 [dependencies]
 dioxus = { workspace = true }
-dioxus-web = { workspace = true }
 gloo-dialogs = { workspace = true }
 im-rc = "15.0.0"
+
+[features]
+default = ["web"]
+web = ["dioxus/web"]
+desktop = ["dioxus/desktop"]
+mobile = ["dioxus/mobile"]

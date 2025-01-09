@@ -1,20 +1,20 @@
-#![allow(non_snake_case)]
 use dioxus::prelude::*;
-use im_rc::hashmap;
+use im_rc::{hashmap, HashMap};
 
-mod footer;
+// mod footer;
 mod header;
-mod item;
-mod list;
+// mod item;
+// mod list;
 
 fn main() {
-    dioxus_web::launch(app);
+    dioxus::launch(App);
 }
 
-fn app(cx: Scope) -> Element {
-    let todos = use_ref(cx, || {
+#[component]
+fn App() -> Element {
+    let todos = use_signal(|| {
         hashmap! {
-            1 => Todo {
+            1usize => Todo {
                 name: "Eat".to_string(),
                 done: true,
             },
@@ -33,20 +33,25 @@ fn app(cx: Scope) -> Element {
         }
     });
 
-    cx.render(rsx! {
-        style { include_str!("./main.css") }
+    rsx! {
+        style { {include_str!("./main.css")} }
         div { class: "todo-container",
             div { class: "todo-wrap",
-                header::index::Header { todos: todos }
-                list::index::List { todos: todos }
-                footer::index::Footer { todos: todos }
+                header::index::Header { todos: todos() }
+                        // list::index::List { todos: todos() }
+            // footer::index::Footer { todos: todos() }
             }
         }
-    })
+    }
 }
 
 #[derive(Clone, PartialEq)]
 pub struct Todo {
     name: String,
     done: bool,
+}
+
+#[derive(PartialEq, Clone, Props)]
+pub struct TodoProps {
+    pub todos: HashMap<usize, Todo>,
 }
