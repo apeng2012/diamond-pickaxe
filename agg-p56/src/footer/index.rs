@@ -1,37 +1,36 @@
-#![allow(non_snake_case)]
 use dioxus::prelude::*;
-use im_rc::HashMap;
 
-use crate::Todo;
+use crate::TodoProps;
 
-#[inline_props]
-pub fn Footer<'a>(cx: Scope, todos: &'a UseRef<HashMap<i32, Todo>>) -> Element {
-    let done_cnt = todos
-        .read()
+#[component]
+pub fn Footer(mut props: TodoProps) -> Element {
+    let done_cnt = props
+        .todos
         .values()
         .fold(0, |acc, todo| acc + if todo.done { 1 } else { 0 });
-    let total = todos.read().len();
-    let all_checked = todos.read().values().all(|todo| todo.done);
+    let total = props.todos.len();
+    let all_checked = props.todos.values().all(|todo| todo.done);
     let all_checked = all_checked && total != 0;
-    let done_key_list = todos
-        .read()
+    let done_key_list = props
+        .todos
         .iter()
         .filter(|(_, todo)| todo.done)
         .map(|(key, _)| *key)
         .collect::<Vec<_>>();
+    let mut props_clone = props.clone();
 
-    cx.render(rsx! {
-        style { include_str!("./index.css") }
+    rsx! {
+        style { {include_str!("./index.css")} }
         div { class: "todo-footer",
             label {
                 input {
                     "type": "checkbox",
                     checked: "{all_checked}",
                     oninput: move |event| {
-                        for (_, todo) in todos.write().iter_mut() {
-                            todo.done = event.value.parse().unwrap();
+                        for (_, todo) in props_clone.todos.iter_mut() {
+                            todo.done = event.value().parse().unwrap();
                         }
-                    }
+                    },
                 }
             }
             span {
@@ -44,11 +43,11 @@ pub fn Footer<'a>(cx: Scope, todos: &'a UseRef<HashMap<i32, Todo>>) -> Element {
                     done_key_list
                         .iter()
                         .for_each(|key| {
-                            todos.write().remove(key);
-                        });
+                            props.todos.remove(key);
+                        })
                 },
                 "Clear Completed Tasks"
             }
         }
-    })
+    }
 }

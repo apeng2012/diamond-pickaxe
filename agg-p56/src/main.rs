@@ -1,7 +1,7 @@
 use dioxus::prelude::*;
 use im_rc::{hashmap, HashMap};
 
-// mod footer;
+mod footer;
 mod header;
 // mod item;
 // mod list;
@@ -38,8 +38,8 @@ fn App() -> Element {
         div { class: "todo-container",
             div { class: "todo-wrap",
                 header::index::Header { todos: todos() }
-                        // list::index::List { todos: todos() }
-            // footer::index::Footer { todos: todos() }
+                // list::index::List { todos: todos() }
+                footer::index::Footer { todos: todos() }
             }
         }
     }
