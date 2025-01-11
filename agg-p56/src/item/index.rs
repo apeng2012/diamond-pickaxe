@@ -1,22 +1,22 @@
-#![allow(non_snake_case)]
 use dioxus::prelude::*;
 use im_rc::HashMap;
 
 use crate::Todo;
 
-#[inline_props]
-pub fn Item<'a>(cx: Scope, id: i32, set_todos: &'a UseRef<HashMap<i32, Todo>>) -> Element {
-    let mouse = use_state(cx, || false);
-    let todo = &set_todos.read()[id];
+#[component]
+pub fn Item(id: usize, set_todos: HashMap<usize, Todo>) -> Element {
+    let mut mouse = use_signal(|| false);
+    let todo = &set_todos[&id];
+    let mut set_todos_clone = set_todos.clone();
 
-    cx.render(rsx! {
-        style { include_str!("./index.css") }
+    rsx! {
+        style { {include_str!("./index.css")} }
         li {
-            background_color: if **mouse { "#ddd" } else { "white" },
-            onmouseenter: |_| {
+            background_color: if mouse() { "#ddd" } else { "white" },
+            onmouseenter: move |_| {
                 mouse.set(true);
             },
-            onmouseleave: |_| {
+            onmouseleave: move |_| {
                 mouse.set(false);
             },
             label {
@@ -24,19 +24,19 @@ pub fn Item<'a>(cx: Scope, id: i32, set_todos: &'a UseRef<HashMap<i32, Todo>>) -
                     "type": "checkbox",
                     checked: "{todo.done}",
                     oninput: move |event| {
-                        set_todos.write()[id].done = event.value.parse().unwrap();
-                    }
+                        set_todos[&id].done = event.value().parse().unwrap();
+                    },
                 }
                 span { "{todo.name}" }
             }
             button {
                 class: "btn btn-danger",
-                style: if **mouse { "display: block" } else { "display: none" },
+                style: if mouse() { "display: block" } else { "display: none" },
                 onclick: move |_| {
-                    set_todos.write().remove(id);
+                    set_todos_clone.remove(&id);
                 },
                 "Delete"
             }
         }
-    })
+    }
 }

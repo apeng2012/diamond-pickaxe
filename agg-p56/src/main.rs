@@ -3,8 +3,8 @@ use im_rc::{hashmap, HashMap};
 
 mod footer;
 mod header;
-// mod item;
-// mod list;
+mod item;
+mod list;
 
 fn main() {
     dioxus::launch(App);
@@ -38,7 +38,7 @@ fn App() -> Element {
         div { class: "todo-container",
             div { class: "todo-wrap",
                 header::index::Header { todos: todos() }
-                // list::index::List { todos: todos() }
+                list::index::List { todos: todos() }
                 footer::index::Footer { todos: todos() }
             }
         }
