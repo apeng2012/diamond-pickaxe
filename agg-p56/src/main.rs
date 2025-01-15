@@ -38,7 +38,7 @@ fn App() -> Element {
         div { class: "todo-container",
             div { class: "todo-wrap",
                 header::index::Header { todos: todos() }
-                list::index::List { todos: todos() }
+                list::index::List { todos }
                 footer::index::Footer { todos: todos() }
             }
         }
