@@ -37,7 +37,7 @@ fn App() -> Element {
         style { {include_str!("./main.css")} }
         div { class: "todo-container",
             div { class: "todo-wrap",
-                header::index::Header { todos: todos() }
+                header::index::Header { todos }
                 list::index::List { todos }
                 footer::index::Footer { todos: todos() }
             }

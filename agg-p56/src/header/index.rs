@@ -1,11 +1,13 @@
 use dioxus::html::input_data::keyboard_types;
 use dioxus::prelude::*;
+use im_rc::HashMap;
 
-use crate::{Todo, TodoProps};
+use crate::Todo;
 
 #[component]
-pub fn Header(mut props: TodoProps) -> Element {
+pub fn Header(mut todos: Signal<HashMap<usize, Todo>>) -> Element {
     let mut todo_name = use_signal(String::new);
+    let length = use_memo(move || todos().len());
 
     rsx! {
         style { {include_str!("./index.css")} }
@@ -25,9 +27,9 @@ pub fn Header(mut props: TodoProps) -> Element {
                         gloo_dialogs::alert("Input cannot be empty!");
                         return;
                     }
-                    let id = props.todos.len() + 1;
-                    props
-                        .todos
+                    let id = length() + 1;
+                    todos
+                        .write()
                         .insert(
                             id,
                             Todo {
