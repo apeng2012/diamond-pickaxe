@@ -1,23 +1,21 @@
 use dioxus::prelude::*;
+use im_rc::HashMap;
 
-use crate::TodoProps;
+use crate::Todo;
 
 #[component]
-pub fn Footer(mut props: TodoProps) -> Element {
-    let done_cnt = props
-        .todos
+pub fn Footer(mut todos: Signal<HashMap<usize, Todo>>) -> Element {
+    let done_cnt = todos()
         .values()
         .fold(0, |acc, todo| acc + if todo.done { 1 } else { 0 });
-    let total = props.todos.len();
-    let all_checked = props.todos.values().all(|todo| todo.done);
+    let total = todos().len();
+    let all_checked = todos().values().all(|todo| todo.done);
     let all_checked = all_checked && total != 0;
-    let done_key_list = props
-        .todos
+    let done_key_list = todos()
         .iter()
         .filter(|(_, todo)| todo.done)
         .map(|(key, _)| *key)
         .collect::<Vec<_>>();
-    let mut props_clone = props.clone();
 
     rsx! {
         style { {include_str!("./index.css")} }
@@ -27,7 +25,7 @@ pub fn Footer(mut props: TodoProps) -> Element {
                     "type": "checkbox",
                     checked: "{all_checked}",
                     oninput: move |event| {
-                        for (_, todo) in props_clone.todos.iter_mut() {
+                        for (_, todo) in todos.write().iter_mut() {
                             todo.done = event.value().parse().unwrap();
                         }
                     },
@@ -43,7 +41,7 @@ pub fn Footer(mut props: TodoProps) -> Element {
                     done_key_list
                         .iter()
                         .for_each(|key| {
-                            props.todos.remove(key);
+                            todos.write().remove(key);
                         })
                 },
                 "Clear Completed Tasks"

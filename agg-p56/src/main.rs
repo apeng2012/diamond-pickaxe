@@ -39,7 +39,7 @@ fn App() -> Element {
             div { class: "todo-wrap",
                 header::index::Header { todos }
                 list::index::List { todos }
-                footer::index::Footer { todos: todos() }
+                footer::index::Footer { todos }
             }
         }
     }
@@ -49,9 +49,4 @@ fn App() -> Element {
 pub struct Todo {
     name: String,
     done: bool,
-}
-
-#[derive(PartialEq, Clone, Props)]
-pub struct TodoProps {
-    pub todos: HashMap<usize, Todo>,
 }
