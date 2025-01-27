@@ -1,5 +1,5 @@
 use dioxus::prelude::*;
-use im_rc::{hashmap, HashMap};
+use im_rc::hashmap;
 
 mod footer;
 mod header;
