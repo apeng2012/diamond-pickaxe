@@ -1,19 +1,20 @@
 use dioxus::prelude::*;
 use serde::Deserialize;
 
-mod list;
+// mod list;
 mod search;
 
-pub fn app(cx: Scope) -> Element {
-    let state = use_ref(cx, || HeadState::First);
+#[component]
+pub fn app() -> Element {
+    let state = use_signal(|| HeadState::First);
 
-    cx.render(rsx! {
-        style { include_str!("./css/bootstrap.css") }
+    rsx! {
+        style { {include_str!("./css/bootstrap.css")} }
         div { class: "container",
-            search::index::search { state: state }
-            list::index::head_list { state: state }
+            search::index::search { state }
+                // list::index::head_list { state: state }
         }
-    })
+    }
 }
 
 #[derive(Clone, PartialEq, Deserialize)]
