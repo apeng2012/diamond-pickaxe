@@ -1,7 +1,7 @@
 use dioxus::prelude::*;
 use serde::Deserialize;
 
-// mod list;
+mod list;
 mod search;
 
 #[component]
@@ -12,7 +12,7 @@ pub fn app() -> Element {
         style { {include_str!("./css/bootstrap.css")} }
         div { class: "container",
             search::index::search { state }
-                // list::index::head_list { state: state }
+            list::index::head_list { state }
         }
     }
 }
