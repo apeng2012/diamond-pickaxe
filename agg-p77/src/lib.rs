@@ -1,49 +1,49 @@
 #![allow(non_snake_case)]
 
 use dioxus::prelude::*;
-use dioxus_router::prelude::*;
 
 mod about;
-mod home;
+// mod home;
 
-#[derive(Routable, Clone)]
-#[rustfmt::skip]
+#[derive(Routable, Clone, PartialEq)]
 pub enum Route {
     #[layout(NavBar)]
-        #[route("/")]
-        About {},
-        #[nest("/home")]
-            #[layout(Home)]
-            #[nest("/message")]
-                #[layout(Message)]
-                #[route("/:id/:title")]
-                Detail {
-                    id: String,
-                    title: String,
-                },
-                #[end_layout]
-            #[end_nest]
-            #[route("/news")]
-            News {},
-            #[end_layout]
-        #[end_nest]
-        #[redirect("/about", || Route::About {})]
+    #[route("/")]
+    About {},
+    // #[nest("/home")]
+    //     #[layout(Home)]
+    //     #[nest("/message")]
+    //         #[layout(Message)]
+    //         #[route("/:id/:title")]
+    //         Detail {
+    //             id: String,
+    //             title: String,
+    //         },
+    //         #[end_layout]
+    //     #[end_nest]
+    //     #[route("/news")]
+    //     News {},
+    //     #[end_layout]
+    // #[end_nest]
+    #[redirect("/about", || Route::About {})]
     #[end_layout]
     #[route("/:..route")]
-    PageNotFound {
-        route: Vec<String>,
-    },
+    PageNotFound { route: Vec<String> },
 }
 
-pub fn app(cx: Scope) -> Element {
-    render!( Router::<Route> {} )
+#[component]
+pub fn app() -> Element {
+    rsx!(
+        Router::<Route> {}
+    )
 }
 
-#[inline_props]
-fn NavBar(cx: Scope) -> Element {
-    let nav = use_navigator(cx);
-    render! {
-        style { include_str!("./css/bootstrap.css") }
+#[component]
+fn NavBar() -> Element {
+    let nav = navigator();
+
+    rsx! {
+        style { {include_str!("./css/bootstrap.css")} }
         div {
             div { class: "row",
                 div { class: "col-xs-offset-2 col-xs-8",
@@ -67,7 +67,7 @@ fn NavBar(cx: Scope) -> Element {
             div { class: "row",
                 div { class: "col-xs-2 col-xs-offset-2",
                     div { class: "list-group",
-                        Link { class: "list-group-item", to: Route::News {}, "Home" }
+                        //                        Link { class: "list-group-item", to: Route::News {}, "Home" }
                         Link { class: "list-group-item", to: Route::About {}, "About" }
                     }
                 }
@@ -83,34 +83,36 @@ fn NavBar(cx: Scope) -> Element {
     }
 }
 
-#[inline_props]
-fn Home(cx: Scope) -> Element {
-    render! { home::index::home {} }
+// #[inline_props]
+// fn Home(cx: Scope) -> Element {
+//     render! { home::index::home {} }
+// }
+
+// #[inline_props]
+// fn Message(cx: Scope) -> Element {
+//     render! { home::message::message {} }
+// }
+
+// #[inline_props]
+// fn Detail(cx: Scope, id: String, title: String) -> Element {
+//     render! { home::detail::detail { id: id.clone(), title: title.clone() } }
+// }
+
+// #[inline_props]
+// fn News(cx: Scope) -> Element {
+//     render! { home::news::news {} }
+// }
+
+#[component]
+fn About() -> Element {
+    rsx! {
+        about::index::about {}
+    }
 }
 
-#[inline_props]
-fn Message(cx: Scope) -> Element {
-    render! { home::message::message {} }
-}
-
-#[inline_props]
-fn Detail(cx: Scope, id: String, title: String) -> Element {
-    render! { home::detail::detail { id: id.clone(), title: title.clone() } }
-}
-
-#[inline_props]
-fn News(cx: Scope) -> Element {
-    render! { home::news::news {} }
-}
-
-#[inline_props]
-fn About(cx: Scope) -> Element {
-    render! { about::index::about {} }
-}
-
-#[inline_props]
-fn PageNotFound(cx: Scope, route: Vec<String>) -> Element {
-    render! {
+#[component]
+fn PageNotFound(route: Vec<String>) -> Element {
+    rsx! {
         h1 { "Page not found" }
         p { "We are terribly sorry, but the page you requested doesn't exist." }
         pre { color: "red", "log:\nattemped to navigate to: {route:?}" }
