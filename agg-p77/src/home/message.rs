@@ -1,6 +1,5 @@
 use crate::Route;
 use dioxus::prelude::*;
-use dioxus_router::prelude::*;
 
 #[derive(Clone, PartialEq)]
 pub struct MessageArr {
@@ -8,21 +7,30 @@ pub struct MessageArr {
     title: String,
 }
 
-pub fn message(cx: Scope) -> Element {
-    let nav = use_navigator(cx);
-    let messages = use_ref(cx, || {
+pub fn message() -> Element {
+    let nav = navigator();
+    let messages = use_signal(|| {
         vec![
-            MessageArr { id: "01".to_string(), title: "message1".to_string() },
-            MessageArr { id: "02".to_string(), title: "message2".to_string() },
-            MessageArr { id: "03".to_string(), title: "message3".to_string() },
+            MessageArr {
+                id: "01".to_string(),
+                title: "message1".to_string(),
+            },
+            MessageArr {
+                id: "02".to_string(),
+                title: "message2".to_string(),
+            },
+            MessageArr {
+                id: "03".to_string(),
+                title: "message3".to_string(),
+            },
         ]
     });
-    cx.render(rsx! {
+    rsx! {
         div {
             ul {
-                messages.read().iter().map(|ma| rsx! {
-                    one_msg {ma: ma.clone()}
-                })
+                {messages.read().iter().map(|ma| rsx! {
+                    one_msg { ma: ma.clone() }
+                })}
             }
         }
         hr {}
@@ -40,14 +48,14 @@ pub fn message(cx: Scope) -> Element {
             },
             "Go forward"
         }
-    })
+    }
 }
 
-#[inline_props]
-fn one_msg(cx: Scope, ma: MessageArr) -> Element {
-    let nav = use_navigator(cx);
+#[component]
+fn one_msg(ma: MessageArr) -> Element {
+    let nav = navigator();
 
-    cx.render(rsx! {
+    rsx! {
         li {
             Link {
                 to: Route::Detail {
@@ -66,14 +74,14 @@ fn one_msg(cx: Scope, ma: MessageArr) -> Element {
                 "push view"
             }
             button {
-                onclick: move |_| {
-                    nav.replace(Route::Detail {
-                        id: ma.id.clone(),
-                        title: ma.title.clone(),
-                    });
-                },
+                // onclick: move |_| {
+                //     nav.replace(Route::Detail {
+                //         id: ma.id.clone(),
+                //         title: ma.title.clone(),
+                //     });
+                // },
                 "replace view"
             }
         }
-    })
+    }
 }

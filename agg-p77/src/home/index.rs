@@ -1,10 +1,10 @@
 use crate::Route;
-use dioxus::prelude::*;
-use dioxus_router::prelude::*;
 
-pub fn home(cx: Scope) -> Element {
-    cx.render(rsx! {
-        style { include_str!("./../css/bootstrap.css") }
+use dioxus::prelude::*;
+
+pub fn home() -> Element {
+    rsx! {
+        style { {include_str!("./../css/bootstrap.css")} }
         h3 { "I am the content of Home" }
         div {
             ul { class: "nav nav-tabs",
@@ -24,5 +24,5 @@ pub fn home(cx: Scope) -> Element {
             }
         }
         Outlet::<Route> {}
-    })
+    }
 }

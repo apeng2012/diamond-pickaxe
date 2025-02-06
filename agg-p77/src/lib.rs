@@ -3,29 +3,28 @@
 use dioxus::prelude::*;
 
 mod about;
-// mod home;
+mod home;
 
 #[derive(Routable, Clone, PartialEq)]
 pub enum Route {
     #[layout(NavBar)]
-    #[route("/")]
-    About {},
-    // #[nest("/home")]
-    //     #[layout(Home)]
-    //     #[nest("/message")]
-    //         #[layout(Message)]
-    //         #[route("/:id/:title")]
-    //         Detail {
-    //             id: String,
-    //             title: String,
-    //         },
-    //         #[end_layout]
-    //     #[end_nest]
-    //     #[route("/news")]
-    //     News {},
-    //     #[end_layout]
-    // #[end_nest]
-    #[redirect("/about", || Route::About {})]
+        #[route("/")]
+        About {},
+
+        #[nest("/home")]
+        #[layout(Home)]
+            #[nest("/message")]
+                #[layout(Message)]
+                #[route("/:id/:title")]
+                Detail { id: String, title: String },
+                #[end_layout]
+            #[end_nest]
+            #[route("/news")]
+            News {},
+
+        #[end_layout]
+        #[end_nest]
+        #[redirect("/about", || Route::About {})]
     #[end_layout]
     #[route("/:..route")]
     PageNotFound { route: Vec<String> },
@@ -83,25 +82,33 @@ fn NavBar() -> Element {
     }
 }
 
-// #[inline_props]
-// fn Home(cx: Scope) -> Element {
-//     render! { home::index::home {} }
-// }
+#[component]
+fn Home() -> Element {
+    rsx! {
+        home::index::home {}
+    }
+}
 
-// #[inline_props]
-// fn Message(cx: Scope) -> Element {
-//     render! { home::message::message {} }
-// }
+#[component]
+fn Message() -> Element {
+    rsx! {
+        home::message::message {}
+    }
+}
 
-// #[inline_props]
-// fn Detail(cx: Scope, id: String, title: String) -> Element {
-//     render! { home::detail::detail { id: id.clone(), title: title.clone() } }
-// }
+#[component]
+fn Detail(id: String, title: String) -> Element {
+    rsx! {
+        home::detail::detail { id: id.clone(), title: title.clone() }
+    }
+}
 
-// #[inline_props]
-// fn News(cx: Scope) -> Element {
-//     render! { home::news::news {} }
-// }
+#[component]
+fn News() -> Element {
+    rsx! {
+        home::news::news {}
+    }
+}
 
 #[component]
 fn About() -> Element {
