@@ -8,23 +8,23 @@ mod home;
 #[derive(Routable, Clone, PartialEq)]
 pub enum Route {
     #[layout(NavBar)]
-        #[route("/")]
-        About {},
+    #[route("/")]
+    About {},
 
-        #[nest("/home")]
-        #[layout(Home)]
-            #[nest("/message")]
-                #[layout(Message)]
-                #[route("/:id/:title")]
-                Detail { id: String, title: String },
-                #[end_layout]
-            #[end_nest]
-            #[route("/news")]
-            News {},
+    #[nest("/home")]
+    #[layout(Home)]
+    #[nest("/message")]
+    #[layout(Message)]
+    #[route("/:id/:title")]
+    Detail { id: String, title: String },
+    #[end_layout]
+    #[end_nest]
+    #[route("/news")]
+    News {},
 
-        #[end_layout]
-        #[end_nest]
-        #[redirect("/about", || Route::About {})]
+    #[end_layout]
+    #[end_nest]
+    #[redirect("/about", || Route::About {})]
     #[end_layout]
     #[route("/:..route")]
     PageNotFound { route: Vec<String> },
@@ -66,7 +66,7 @@ fn NavBar() -> Element {
             div { class: "row",
                 div { class: "col-xs-2 col-xs-offset-2",
                     div { class: "list-group",
-                        //                        Link { class: "list-group-item", to: Route::News {}, "Home" }
+                        Link { class: "list-group-item", to: Route::News {}, "Home" }
                         Link { class: "list-group-item", to: Route::About {}, "About" }
                     }
                 }

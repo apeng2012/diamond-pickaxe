@@ -2,11 +2,11 @@ use crate::Route;
 use dioxus::prelude::*;
 
 pub fn news() -> Element {
-    let is_timeout = use_signal(|| false);
-    // use_future(cx, (is_timeout,), |(is_timeout,)| async move {
-    //     async_std::task::sleep(std::time::Duration::from_secs(3)).await;
-    //     is_timeout.set(true);
-    // });
+    let mut is_timeout = use_signal(|| false);
+    let _ = use_resource(move || async move {
+        async_std::task::sleep(std::time::Duration::from_secs(3)).await;
+        is_timeout.set(true);
+    });
 
     if is_timeout() {
         let nav = navigator();

@@ -65,21 +65,27 @@ fn one_msg(ma: MessageArr) -> Element {
                 "{ma.title}"
             }
             button {
-                onclick: move |_| {
-                    nav.push(Route::Detail {
-                        id: ma.id.clone(),
-                        title: ma.title.clone(),
-                    });
+                onclick: {
+                    let ma_clone = ma.clone();
+                    move |_| {
+                        nav.push(Route::Detail {
+                            id: ma_clone.id.clone(),
+                            title: ma_clone.title.clone(),
+                        });
+                    }
                 },
                 "push view"
             }
             button {
-                // onclick: move |_| {
-                //     nav.replace(Route::Detail {
-                //         id: ma.id.clone(),
-                //         title: ma.title.clone(),
-                //     });
-                // },
+                onclick: {
+                    let ma_clone = ma.clone();
+                    move |_| {
+                        nav.replace(Route::Detail {
+                            id: ma_clone.id.clone(),
+                            title: ma_clone.title.clone(),
+                        });
+                    }
+                },
                 "replace view"
             }
         }
