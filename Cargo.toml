@@ -15,10 +15,11 @@ members = [
     "agg-p65",
     "agg-p67",
     "agg-p77",
+    "agg-p99",
     ]
 
 [workspace.dependencies]
-dioxus = { version = "0.6.2", features = [] }
+dioxus = { version = "0.6.3", features = [] }
 gloo-dialogs = "0.2.0"
 async-std = "1.12.0"
 
