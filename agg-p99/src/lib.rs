@@ -15,10 +15,6 @@ pub fn app() -> Element {
 #[component]
 fn my_count() -> Element {
     let mut select_number = use_signal(|| 1);
-    let mut delay1s_inc = use_resource(move || async move {
-        async_std::task::sleep(std::time::Duration::from_secs(1)).await;
-        *CNT.write() += select_number();
-    });
 
     rsx! {
         h2 { "I am a count component" }
@@ -50,7 +46,11 @@ fn my_count() -> Element {
         }
         button {
             onclick: move |_| {
-                delay1s_inc.restart();
+                let current = select_number();
+                spawn(async move {
+                    async_std::task::sleep(std::time::Duration::from_secs(1)).await;
+                    *CNT.write() += current;
+                });
             },
             "increment async"
         }
