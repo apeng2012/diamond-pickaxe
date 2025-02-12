@@ -1,31 +1,29 @@
 use dioxus::prelude::*;
 
-pub fn person(cx: Scope) -> Element {
-    // let cnt = use_atom_state(cx, &CNT);
-    let name = use_state(cx, || "".to_string());
-    let age = use_state(cx, || "".to_string());
+#[component]
+pub fn person() -> Element {
+    let mut name = use_signal(|| "".to_string());
+    let mut age = use_signal(|| "".to_string());
 
-    render!(rsx! {
+    rsx! {
         div {
-            h2 { "I am a person component"}
+            h2 { "I am a person component" }
             input {
                 placeholder: "Enter name",
                 value: "{name}",
-                oninput: move |e| name.set(e.value.clone())
+                oninput: move |e| name.set(e.value()),
             }
             input {
                 placeholder: "Enter age",
                 value: "{age}",
-                oninput: move |e| name.set(e.value.clone())
+                oninput: move |e| age.set(e.value()),
             }
-            button {
-                "Add"
-            }
+            button { "Add" }
             ul {
-                li {"name1 -- age1"}
-                li {"name2 -- age2"}
-                li {"name3 -- age3"}
+                li { "name1 -- age1" }
+                li { "name2 -- age2" }
+                li { "name3 -- age3" }
             }
         }
-    })
+    }
 }

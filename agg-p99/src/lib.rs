@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-//mod person;
+mod person;
 
 static CNT: GlobalSignal<i32> = Global::new(|| 0);
 
@@ -9,6 +9,7 @@ pub fn app() -> Element {
     rsx! {
         my_count {}
         hr {}
+        person::person {}
     }
 }
 
