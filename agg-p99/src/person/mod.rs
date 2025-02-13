@@ -2,8 +2,9 @@ use dioxus::prelude::*;
 
 #[component]
 pub fn person() -> Element {
+    let mut persons = use_context::<crate::PersonState>().persons;
     let mut name = use_signal(|| "".to_string());
-    let mut age = use_signal(|| "".to_string());
+    let mut age = use_signal(|| 0u8);
 
     rsx! {
         div {
@@ -16,13 +17,13 @@ pub fn person() -> Element {
             input {
                 placeholder: "Enter age",
                 value: "{age}",
-                oninput: move |e| age.set(e.value()),
+                oninput: move |e| age.set(e.value().parse().unwrap()),
             }
-            button { "Add" }
+            button { onclick: move |_| persons.write().push((name(), age())), "Add" }
             ul {
-                li { "name1 -- age1" }
-                li { "name2 -- age2" }
-                li { "name3 -- age3" }
+                for (name , age) in persons.read().iter() {
+                    li { {format!("{name} -- {age}")} }
+                }
             }
         }
     }

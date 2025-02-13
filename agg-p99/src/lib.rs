@@ -4,8 +4,17 @@ mod person;
 
 static CNT: GlobalSignal<i32> = Global::new(|| 0);
 
+#[derive(Clone, Copy)]
+pub struct PersonState {
+    persons: Signal<Vec<(String, u8)>>,
+}
+
 #[component]
 pub fn app() -> Element {
+    let _ = use_context_provider(|| PersonState {
+        persons: Signal::new(vec![("tom".to_string(), 18)]),
+    });
+
     rsx! {
         my_count {}
         hr {}
